@@ -6,7 +6,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <title>AquaTech | Login</title>
+    <title>Harry Potter</title>
 
     <script src="./js/sessao.js"></script>
 
@@ -21,17 +21,14 @@
 
     <div class="header">
         <div class="container">
-            <h1 class="titulo">AquaTech</h1>
+            <h1 class="titulo">Harry Potter</h1>
             <ul class="navbar">
                 <li>
                     <a href="index.html">Inicial</a>
                 </li>
-                <li>
-                    <a href="simulador.html">Simulador</a>
-                </li>
                 <li>|</li>
                 <li class="agora">
-                    <a href="#">Login</a>
+                    <a href="">Login</a>
                 </li>
                 <li>
                     <a href="cadastro.html">Cadastro</a>
@@ -48,25 +45,25 @@
             </div>
         </div>
         <div class="container">
-            <div class="card card-login">
-                <h2>Olá de volta!</h2>
-                <div class="formulario">
-                    <div class="campo">
-                        <span>E-mail:</span>
-                        <input id="email_input" type="text" placeholder="Login">
-                    </div>
-                    <div class="campo">
-                        <span>Senha:</span>
-                        <input id="senha_input" type="password" placeholder="******">
-                    </div>
-                    <button class="botao" onclick="entrar()">Entrar</button>
+            <div class="login-esquerda">
+                <a href="index.html"><div class="botao-voltar">Voltar</div></a>
+                
+                <div class="login-citacao">“Para a mente bem estruturada, a morte é apenas uma aventura seguinte” <br>—
+                    Alvo Dumbledore</div>
+            </div>
+            <div class="login-direita">
+
+                <div style="font-size: 40px;">Bem vindo de volta!</div>
+                <div>
+                    <div class="email-login">E-mail</div>
+                    <input type="text" id="email_input">
+                </div>
+                <div>
+                    <div class="senha-login">Senha</div>
+                    <input type="password" id="senha_input">
                 </div>
 
-                <div id="div_aguardar" class="loading-div">
-                    <img src="./assets/circle-loading.gif" id="loading-gif">
-                </div>
-
-                <div id="div_erros_login"></div>
+                <button onclick="entrar()" class="botao-login">Entrar</button>
             </div>
         </div>
     </div>
@@ -74,8 +71,7 @@
     <!--footer inicio-->
     <div class="footer">
         <div class="container">
-            <h4>Feito com amor por aluno &hearts; SPTech &copy; 2023</h4>
-            <span class="version">v1.0.0</span>
+            <h4>Feito com magia por Heitor Traspadini &copy; 2026</h4>
         </div>
     </div>
     <!--footer fim-->
@@ -88,7 +84,6 @@
 
 
     function entrar() {
-        aguardar();
 
         var emailVar = email_input.value;
         var senhaVar = senha_input.value;

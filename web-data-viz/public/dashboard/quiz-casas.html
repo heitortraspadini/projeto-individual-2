@@ -1,0 +1,273 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Harry Potter</title>
+    <link rel="stylesheet" href="../css/style.css">
+</head>
+
+
+<body onload="onloadEsconder()">
+    <div id="pontuacaoEJogo">
+        <button id="btnIniciarQuiz" onclick="iniciarQuiz()">INICIAR QUIZ</button>
+
+        <div id="pontuacao" style="border-color: white;" class="flex-colunar width-fit-content border-primary"></div>
+
+        <div id="jogo" class="width-fit-content flex-colunar border-secondary">
+
+            <div id="infoQuestao" class="padding-8">
+                <span>Questão atual: <span id="spanNumeroDaQuestaoAtual"></span> de <span id="qtdQuestoes"></span>
+                    questões.</span>
+            </div>
+
+            <div id="perguntaDaQuestaoAtual" class="padding-8">
+                <span id="spanQuestaoExibida" class="text-bold"></span>
+            </div>
+
+            <div id="infoAlternativas" class="padding-8">
+                <span><em>Escolha uma opção dentre as abaixo:</em></span>
+            </div>
+
+            <div id="opcoes" class="flex-colunar padding-8">
+                <span>
+                    <input type="radio" id="primeiraOpcao" name="option" class="radio" value="alternativaA" />
+                    <label for="primeiraOpcao" class="option" id="labelOpcaoUm"></label>
+                </span>
+                <span>
+                    <input type="radio" id="segundaOpcao" name="option" class="radio" value="alternativaB" />
+                    <label for="segundaOpcao" class="option" id="labelOpcaoDois"></label>
+                </span>
+                <span>
+                    <input type="radio" id="terceiraOpcao" name="option" class="radio" value="alternativaC" />
+                    <label for="terceiraOpcao" class="option" id="labelOpcaoTres"></label>
+                </span>
+                <span>
+                    <input type="radio" id="quartaOpcao" name="option" class="radio" value="alternativaD" />
+                    <label for="quartaOpcao" class="option" id="labelOpcaoQuatro"></label>
+                </span>
+            </div>
+
+            <div id="botoes" class="flex-colunar padding-8">
+                <button onclick="submeter()" id="btnSubmeter">Submeter resposta</button>
+                <button onclick="avancar()" id="btnProx" disabled>Avançar para próxima questão</button>
+                <!-- <button onclick="finalizar()" id="btnConcluir" disabled>Finalizar Quiz</button> -->
+                <button onclick="tentarNovamente()" id="btnTentarNovamente" disabled>Tentar novamente</button>
+            </div>
+
+        </div>
+    </div>
+</body>
+
+</html>
+<script>
+    const listaDeQuestoes = [
+        {
+            pergunta: "Se você encontrasse uma porta secreta trancada em Hogwarts, o que faria?",
+            alternativaA: "Procuraria imediatamente um feitiço para abrir ou tentaria arrombar, a curiosidade é maior.",
+            alternativaB: "Analisaria as runas ao redor e pesquisaria na biblioteca sobre a história daquela ala do castelo.",
+            alternativaC: "Chamaria meus amigos para investigarmos juntos, pois a união faz a força.",
+            alternativaD: "Guardaria o segredo para usar como um esconderijo útil ou para obter alguma vantagem depois."
+        },
+        {
+            pergunta: "Uma tempestade de neve mágica prende todos no Salão Comunal. Como você passa o tempo?",
+            alternativaA: "Desafiando todos para um duelo de feitiços de inverno ou inventando uma brincadeira radical.",
+            alternativaB: "Lendo aquele grimório antigo e complexo que peguei na Seção Reservada.",
+            alternativaC: "Preparando chocolate quente para todo mundo e garantindo que todos estejam confortáveis.",
+            alternativaD: "Planejando estrategicamente como usar o isolamento para adiantar meus próprios objetivos."
+        },
+        {
+            pergunta: "Se você pudesse criar uma nova poção mágica, qual seria o principal efeito dela?",
+            alternativaA: "Dar ao usuário uma coragem inabalável para enfrentar qualquer perigo de frente.",
+            alternativaB: "Expandir a mente para compreender todas as línguas e segredos do universo.",
+            alternativaC: "Curar instantaneamente qualquer dor física ou emocional de quem a tomar.",
+            alternativaD: "Mudar a percepção dos outros, fazendo com que vejam você exatamente como você deseja."
+        },
+        {
+            pergunta: "Você está caminhando pela Floresta Proibida e encontra uma criatura desconhecida e imponente. Qual sua reação?",
+            alternativaA: "Aproximo-me sem medo para tentar domá-la ou interagir, confiando nos meus instintos.",
+            alternativaB: "Fico à distância observando seus padrões de comportamento e anotando seus detalhes mentais.",
+            alternativaC: "Ofereço um pedaço de comida com cuidado, demonstrando respeito e empatia pela vida dela.",
+            alternativaD: "Penso em como as propriedades mágicas dessa criatura poderiam me tornar um bruxo mais poderoso."
+        },
+        {
+            pergunta: "O Espelho de Ojesed mostra o desejo mais profundo do seu coração. O que você vê?",
+            alternativaA: "Eu mesmo liderando uma grande revolução e salvando o mundo bruxo de uma grande ameaça.",
+            alternativaB: "Eu desvendando o maior mistério da magia que nenhum outro bruxo jamais conseguiu entender.",
+            alternativaC: "Uma mesa gigante cercada por todas as pessoas que amo, felizes, seguras e unidas.",
+            alternativaD: "Eu no topo do Ministério da Magia, respeitado, influente e com o controle total do meu destino."
+        },
+        {
+            pergunta: "Qual dessas paisagens mágicas mais acalma a sua alma?",
+            alternativaA: "O topo da torre mais alta de Hogwarts durante uma noite de ventania e trovões.",
+            alternativaB: "Uma biblioteca infinita iluminada por velas flutuantes onde o tempo parece não passar.",
+            alternativaC: "Uma estufa cheia de plantas mágicas exóticas com cheiro de terra molhada e sol.",
+            alternativaD: "Um salão subterrâneo luxuoso, à meia-luz, com vista para as profundezas misteriosas do Lago Negro."
+        },
+        {
+            pergunta: "Em um teste prático de Defesa Contra as Artes das Trevas, seu Bicho-Papão assume a forma de:",
+            alternativaA: "Ver-me paralisado pelo medo, incapaz de agir para defender quem precisa.",
+            alternativaB: "A sensação de ignorância absoluta, descobrir que tudo o que estudei estava errado.",
+            alternativaC: "A solidão completa, ver todos os meus amigos me abandonando ou me esquecendo.",
+            alternativaD: "O fracasso público, ver-me sem influência, fraco e humilhado diante dos meus rivais."
+        }
+
+    ]
+
+    // variáveis globais    
+    let numeroDaQuestaoAtual = 0
+    let pontuacaoFinal = 0
+    let grif = 0;
+    let corv = 0;
+    let lufa = 0;
+    let sons = 0;
+    let quantidadeDeQuestoes = listaDeQuestoes.length
+    // let isUltima = numeroDaQuestaoAtual == quantidadeDeQuestoes-1 ? true : false
+
+    function onloadEsconder() {
+        document.getElementById('pontuacao').style.display = "none"
+        document.getElementById('jogo').style.display = "none"
+    }
+
+    function iniciarQuiz() {
+        document.getElementById('pontuacao').style.display = "flex"
+        document.getElementById('jogo').style.display = "flex"
+        document.getElementById('btnIniciarQuiz').style.display = "none"
+
+        document.getElementById('qtdQuestoes').innerHTML = quantidadeDeQuestoes
+
+        preencherHTMLcomQuestaoAtual(0)
+
+        btnSubmeter.disabled = false
+        btnProx.disabled = true
+        // btnConcluir.disabled = true
+        btnTentarNovamente.disabled = true
+    }
+
+    function preencherHTMLcomQuestaoAtual(index) {
+        habilitarAlternativas(true)
+        const questaoAtual = listaDeQuestoes[index]
+        numeroDaQuestaoAtual = index
+        console.log("questaoAtual")
+        console.log(questaoAtual)
+        document.getElementById("spanNumeroDaQuestaoAtual").innerHTML = Number(index) + 1 // ajustando porque o index começa em 0
+        document.getElementById("spanQuestaoExibida").innerHTML = questaoAtual.pergunta;
+        document.getElementById("labelOpcaoUm").innerHTML = questaoAtual.alternativaA;
+        document.getElementById("labelOpcaoDois").innerHTML = questaoAtual.alternativaB;
+        document.getElementById("labelOpcaoTres").innerHTML = questaoAtual.alternativaC;
+        document.getElementById("labelOpcaoQuatro").innerHTML = questaoAtual.alternativaD;
+    }
+
+    function submeter() {
+        const options = document.getElementsByName("option"); // recupera alternativas no html
+
+        let hasChecked = false
+        for (let i = 0; i < options.length; i++) {
+            if (options[i].checked) {
+                hasChecked = true
+                break
+            }
+        }
+
+        if (!hasChecked) {
+            alert("Não há alternativas escolhidas. Escolha uma opção.")
+        } else {
+            btnSubmeter.disabled = true
+            btnProx.disabled = false
+
+            habilitarAlternativas(false)
+
+            checarResposta()
+        }
+    }
+
+    function habilitarAlternativas(trueOrFalse) {
+        let opcaoEscolhida = trueOrFalse ? false : true
+
+        primeiraOpcao.disabled = opcaoEscolhida
+        segundaOpcao.disabled = opcaoEscolhida
+        terceiraOpcao.disabled = opcaoEscolhida
+        quartaOpcao.disabled = opcaoEscolhida
+
+    }
+
+    function avancar() {
+        btnProx.disabled = true
+        btnSubmeter.disabled = false
+        numeroDaQuestaoAtual++
+
+
+        desmarcarRadioButtons()
+
+        if (numeroDaQuestaoAtual < quantidadeDeQuestoes - 1) {
+            preencherHTMLcomQuestaoAtual(numeroDaQuestaoAtual)
+        } else if (numeroDaQuestaoAtual == quantidadeDeQuestoes - 1) {
+            preencherHTMLcomQuestaoAtual(numeroDaQuestaoAtual)
+        } else {
+            finalizarJogo()
+        }
+        limparCoresBackgroundOpcoes()
+    }
+
+    function tentarNovamente() {
+        // atualiza a página
+        window.location.reload()
+    }
+
+    function checarResposta() {
+        const questaoAtual = listaDeQuestoes[numeroDaQuestaoAtual] // questão atual 
+
+        const options = document.getElementsByName("option"); // recupera alternativas no html
+
+        options.forEach((option) => {
+            if (option.value === questaoAtual.alternativaA) {
+                grif++
+                pontuacaoFinal++
+            } else if (option.value === questaoAtual.alternativaB){
+                corv++
+                pontuacaoFinal++
+            } else if (option.value === questaoAtual.alternativaC){
+                lufa++
+                pontuacaoFinal++
+            } else {
+                sons++
+                pontuacaoFinal++
+            }
+        })
+
+    }
+
+    function limparCoresBackgroundOpcoes() {
+        const options = document.getElementsByName("option");
+        options.forEach((option) => {
+            document.getElementById(option.labels[0].id).classList.remove("text-danger-with-bg")
+            document.getElementById(option.labels[0].id).classList.remove("text-success-with-bg")
+        })
+    }
+
+    function desmarcarRadioButtons() {
+        const options = document.getElementsByName("option");
+        for (let i = 0; i < options.length; i++) {
+            options[i].checked = false;
+        }
+    }
+
+    function finalizarJogo() {
+        let textoParaMensagemFinal = null
+        let classComCoresParaMensagemFinal = null
+        const porcentagemFinalDeAcertos = pontuacaoFinal / quantidadeDeQuestoes
+
+        document.getElementById('msgFinal').innerHTML = textoParaMensagemFinal
+        document.getElementById('msgFinal').classList.add(classComCoresParaMensagemFinal)
+        document.getElementById('spanPontuacaoFinal').innerHTML = pontuacaoFinal
+
+        document.getElementById('jogo').classList.add("text-new-gray")
+
+        btnProx.disabled = true
+        btnSubmeter.disabled = true
+        // btnConcluir.disabled = true
+        btnTentarNovamente.disabled = false
+
+    }
+</script>

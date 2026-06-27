@@ -15,6 +15,11 @@ body {
   --tamanho-footer: 65px;
 }
 
+body a{
+  text-decoration: none;
+  color: #fff;
+}
+
 .container {
   display: flex;
   width: 80%;
@@ -23,7 +28,7 @@ body {
 
 .header {
   height: var(--tamanho-header);
-  border-bottom: 2px solid #32b9cd;
+  border-bottom: 2px solid #6f00ff;
 }
 
 .header .container {
@@ -51,21 +56,21 @@ body {
 }
 
 .titulo {
-  color: #32b9cd;
+  color: #ffde25;
   width: fit-content;
   font-weight: 500;
+  font-size: 40px;
 }
 
 .header h1 {
   margin: 0;
 }
 
-/* BANNER */
-
 .banner {
-  height: var(--tamanho-banner);
+  height: 800px;
   color: white;
-  background-image: url('../assets/imgs/bg-jelly-fish-para-home.png');
+  background-image: url('../assets/imgs/entradaHogwarts.jpg');
+  background-repeat: no-repeat;
   background-size: cover;
 }
 
@@ -76,10 +81,10 @@ body {
 }
 
 .banner .container p {
-  width: 50%;
+  width: 80%;
   margin: 0;
   padding: 0;
-  font-size: 36px;
+  font-size: 60px;
 }
 
 .banner .container span {
@@ -121,7 +126,7 @@ body {
 /* FOOTER */
 
 .footer {
-  background-color: #32b9cd;
+  background-color: #6f00ff;
   height: 150px;
   color: #fff;
   display: flex;
@@ -141,11 +146,22 @@ body {
 
 .login {
   height: var(--tamanho-login);
-  background-image: url('../assets/imgs/bg-jelly-fish-para-home.png');
+  background-image: url('../assets/imgs/salaoHogwarts.png');
+  background-size: cover;
+}
+
+.cadastro {
+  height: var(--tamanho-login);
+  background-image: url('../assets/imgs/cartasHogwarts.png');
   background-size: cover;
 }
 
 .login .container {
+  justify-content: center;
+  align-items: center;
+  height: 100%;
+}
+.cadastro .container {
   justify-content: center;
   align-items: center;
   height: 100%;
@@ -214,7 +230,7 @@ body {
   font-weight: 600;
   font-size: 18px;
   color: #fff;
-  background-color: #ED145B;
+  background-color: #6d12ff;
   width: 120px;
   height: 30px;
   align-self: center;
@@ -359,4 +375,88 @@ input {
   50%  {transform: rotate(25deg)}
   75%  {transform: rotate(-25deg)}
   100% {transform: rotate(25deg)}
+}
+
+.login-esquerda{
+  height: 400px;
+  width: 200px;
+  border-radius: 10px 0 0 10px;
+  background-color: #6f00ff;
+  flex-direction: column;
+  justify-content: space-around;
+  display: flex;
+  border: rgb(255, 222, 37) solid 2px;
+  border-right: 0px;
+}
+
+.login-direita{
+  height: 370px;
+  width: 370px;
+  border-radius: 0 10px 10px 0;
+  background-color: #e5e5e5;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+  align-items: center;
+  font-size: 50px;
+  padding: 15px;
+  border: rgb(255, 222, 37) solid 2px;
+  border-left: 0px;
+}
+
+.login-citacao{
+  width: 160px;
+  align-self: center;
+  
+}
+
+.botao-voltar{
+  width: 150px;
+  height: 30px;
+  align-self: center;
+  text-align: center;
+  font-size: 30px;
+}
+
+.email-login{
+  font-size: 20px;
+  align-self: flex-start;
+}
+
+.senha-login{
+  font-size: 20px;
+  align-self: flex-start;
+}
+
+.login-direita input{
+  align-self: flex-start;
+  width: 345px;
+}
+
+.botao-login{
+  width: 150px;
+  height: 30px;
+  font-size: 22px;
+  border-radius: 5px;
+}
+
+.box img{
+  width: 400px;
+  height: 300px;
+}
+
+#email_input{
+  border-color: rgb(255, 222, 37);
+}
+
+#senha_input{
+  border-color: rgb(255, 222, 37);
+}
+
+#confirmacao_senha_input{
+  border-color: rgb(255, 222, 37);
+}
+
+#nome_input{
+  border-color: rgb(255, 222, 37);
 }

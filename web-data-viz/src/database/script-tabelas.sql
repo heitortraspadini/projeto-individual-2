@@ -56,3 +56,29 @@ insert into empresa (razao_social, codigo_ativacao) values ('Empresa 1', 'ED145B
 insert into empresa (razao_social, codigo_ativacao) values ('Empresa 2', 'A1B2C3');
 insert into aquario (descricao, fk_empresa) values ('Aquário de Estrela-do-mar', 1);
 insert into aquario (descricao, fk_empresa) values ('Aquário de Peixe-dourado', 2);
+
+/* comandos de ajuste para manter apenas usuarios e resultados dos quizzes */
+
+SET FOREIGN_KEY_CHECKS = 0;
+
+DROP TABLE IF EXISTS aviso;
+DROP TABLE IF EXISTS medida;
+DROP TABLE IF EXISTS aquario;
+DROP TABLE IF EXISTS empresa;
+
+SET FOREIGN_KEY_CHECKS = 1;
+
+ALTER TABLE usuario DROP FOREIGN KEY usuario_ibfk_1;
+ALTER TABLE usuario DROP COLUMN fk_empresa;
+
+CREATE TABLE resultado_quiz (
+	id INT PRIMARY KEY AUTO_INCREMENT,
+	fk_usuario INT NOT NULL,
+	quiz ENUM('casas', 'patronos') NOT NULL,
+	pontuacao INT NOT NULL,
+	acertos INT NOT NULL,
+	total_questoes INT NOT NULL,
+	realizado_em DATETIME DEFAULT CURRENT_TIMESTAMP,
+	FOREIGN KEY (fk_usuario) REFERENCES usuario(id)
+
+);

@@ -42,7 +42,6 @@ create table aquario (
 	FOREIGN KEY (fk_empresa) REFERENCES empresa(id)
 );
 
-/* esta tabela deve estar de acordo com o que está em INSERT de sua API do arduino - dat-acqu-ino */
 
 create table medida (
 	id INT PRIMARY KEY AUTO_INCREMENT,
@@ -57,7 +56,7 @@ insert into empresa (razao_social, codigo_ativacao) values ('Empresa 2', 'A1B2C3
 insert into aquario (descricao, fk_empresa) values ('Aquário de Estrela-do-mar', 1);
 insert into aquario (descricao, fk_empresa) values ('Aquário de Peixe-dourado', 2);
 
-/* comandos de ajuste para manter apenas usuarios e resultados dos quizzes */
+
 
 SET FOREIGN_KEY_CHECKS = 0;
 

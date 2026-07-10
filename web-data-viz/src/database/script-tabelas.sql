@@ -10,73 +10,18 @@ CREATE DATABASE aquatech;
 
 USE aquatech;
 
-CREATE TABLE empresa (
-	id INT PRIMARY KEY AUTO_INCREMENT,
-	razao_social VARCHAR(50),
-	cnpj CHAR(14),
-	codigo_ativacao VARCHAR(50)
-);
-
 CREATE TABLE usuario (
 	id INT PRIMARY KEY AUTO_INCREMENT,
 	nome VARCHAR(50),
 	email VARCHAR(50),
-	senha VARCHAR(50),
-	fk_empresa INT,
-	FOREIGN KEY (fk_empresa) REFERENCES empresa(id)
+	senha VARCHAR(50)
 );
-
-CREATE TABLE aviso (
-	id INT PRIMARY KEY AUTO_INCREMENT,
-	titulo VARCHAR(100),
-	descricao VARCHAR(150),
-	fk_usuario INT,
-	FOREIGN KEY (fk_usuario) REFERENCES usuario(id)
-);
-
-create table aquario (
-/* em nossa regra de negócio, um aquario tem apenas um sensor */
-	id INT PRIMARY KEY AUTO_INCREMENT,
-	descricao VARCHAR(300),
-	fk_empresa INT,
-	FOREIGN KEY (fk_empresa) REFERENCES empresa(id)
-);
-
-
-create table medida (
-	id INT PRIMARY KEY AUTO_INCREMENT,
-	temperatura DECIMAL,
-	momento DATETIME,
-	fk_aquario INT,
-	FOREIGN KEY (fk_aquario) REFERENCES aquario(id)
-);
-
-insert into empresa (razao_social, codigo_ativacao) values ('Empresa 1', 'ED145B');
-insert into empresa (razao_social, codigo_ativacao) values ('Empresa 2', 'A1B2C3');
-insert into aquario (descricao, fk_empresa) values ('Aquário de Estrela-do-mar', 1);
-insert into aquario (descricao, fk_empresa) values ('Aquário de Peixe-dourado', 2);
-
-
-
-SET FOREIGN_KEY_CHECKS = 0;
-
-DROP TABLE IF EXISTS aviso;
-DROP TABLE IF EXISTS medida;
-DROP TABLE IF EXISTS aquario;
-DROP TABLE IF EXISTS empresa;
-
-SET FOREIGN_KEY_CHECKS = 1;
-
-ALTER TABLE usuario DROP FOREIGN KEY usuario_ibfk_1;
-ALTER TABLE usuario DROP COLUMN fk_empresa;
 
 CREATE TABLE resultado_quiz (
 	id INT PRIMARY KEY AUTO_INCREMENT,
 	fk_usuario INT NOT NULL,
 	quiz ENUM('casas', 'patronos') NOT NULL,
-	pontuacao INT NOT NULL,
-	acertos INT NOT NULL,
-	total_questoes INT NOT NULL,
+	resultado VARCHAR(50) NOT NULL,
 	realizado_em DATETIME DEFAULT CURRENT_TIMESTAMP,
 	FOREIGN KEY (fk_usuario) REFERENCES usuario(id)
 

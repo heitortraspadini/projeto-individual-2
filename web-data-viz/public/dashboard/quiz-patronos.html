@@ -14,7 +14,7 @@
         <button id="btnIniciarQuiz" onclick="iniciarQuiz()">INICIAR QUIZ</button>
 
         <div id="pontuacao" style="border-color: white;" class="flex-colunar width-fit-content border-primary">
-           
+
         </div>
 
         <div id="jogo" class="width-fit-content flex-colunar border-secondary">
@@ -124,6 +124,7 @@
     let corv = 0;
     let lufa = 0;
     let sons = 0;
+    const nomeQuiz = "patronos";
     let quantidadeDeQuestoes = listaDeQuestoes.length
     // let isUltima = numeroDaQuestaoAtual == quantidadeDeQuestoes-1 ? true : false
 
@@ -218,23 +219,18 @@
     }
 
     function checarResposta() {
-        const questaoAtual = listaDeQuestoes[numeroDaQuestaoAtual] // questão atual 
-
         const options = document.getElementsByName("option"); // recupera alternativas no html
-
         options.forEach((option) => {
-            if (option.value === questaoAtual.alternativaA) {
-                grif++
-                pontuacaoFinal++
-            } else if (option.value === questaoAtual.alternativaB){
-                corv++
-                pontuacaoFinal++
-            } else if (option.value === questaoAtual.alternativaC){
-                lufa++
-                pontuacaoFinal++
-            } else {
-                sons++
-                pontuacaoFinal++
+            if (option.checked) {
+                if (option.value === "alternativaA") {
+                    grif++
+                } else if (option.value === "alternativaB") {
+                    corv++
+                } else if (option.value === "alternativaC") {
+                    lufa++
+                } else if (option.value === "alternativaD") {
+                    sons++
+                }
             }
         })
 
@@ -256,20 +252,70 @@
     }
 
     function finalizarJogo() {
-        let textoParaMensagemFinal = null
-        let classComCoresParaMensagemFinal = null
-        const porcentagemFinalDeAcertos = pontuacaoFinal / quantidadeDeQuestoes
+        const resultado = obterResultadoFinal()
+        const pontuacaoVencedora = obterMaiorPontuacao()
 
-        document.getElementById('msgFinal').innerHTML = textoParaMensagemFinal
-        document.getElementById('msgFinal').classList.add(classComCoresParaMensagemFinal)
-        document.getElementById('spanPontuacaoFinal').innerHTML = pontuacaoFinal
+        document.getElementById('pontuacao').innerHTML =
+            `<div class="padding-8">Quiz finalizado</div>
+             <div class="padding-8">Resultado: <strong>${resultado}</strong></div>
+             <div class="padding-8">Pontos da categoria vencedora: <strong>${pontuacaoVencedora}</strong></div>
+             <div class="padding-8">Registrado em: <strong>${new Date().toLocaleString('pt-BR')}</strong></div>`
 
         document.getElementById('jogo').classList.add("text-new-gray")
 
         btnProx.disabled = true
         btnSubmeter.disabled = true
-        // btnConcluir.disabled = true
         btnTentarNovamente.disabled = false
+
+        salvarResultadoQuiz(resultado)
+    }
+
+    // !!!!!!!!
+    function obterMaiorPontuacao() {
+        return Math.max(grif, corv, lufa, sons)
+    }
+
+    // !!!!!!!!
+    function obterResultadoFinal() {
+        const resultados = [
+            { nome: "Grifinória", pontos: grif },
+            { nome: "Corvinal", pontos: corv },
+            { nome: "Lufa-Lufa", pontos: lufa },
+            { nome: "Sonserina", pontos: sons }
+        ]
+
+        resultados.sort((primeiro, segundo) => segundo.pontos - primeiro.pontos)
+        return resultados[0].nome
+    }
+
+    function salvarResultadoQuiz(resultado) {
+        const idUsuario = sessionStorage.ID_USUARIO
+
+        if (!idUsuario) {
+            console.warn("Não foi possível salvar o resultado porque o usuário não está logado.")
+            return
+        }
+
+        // !!!!!!!!!
+        fetch("/resultados-quiz/cadastrar", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify({
+                fkUsuarioServer: idUsuario,
+                quizServer: nomeQuiz,
+                resultadoServer: resultado
+            })
+        }).then(function (resposta) {
+            if (!resposta.ok) {
+                return resposta.text().then(function (texto) {
+                    console.error("Houve um erro ao salvar o resultado do quiz.", texto)
+                })
+            }
+        }).catch(function (erro) {
+            console.error("Houve um erro ao salvar o resultado do quiz.", erro)
+        })
 
     }
 </script>

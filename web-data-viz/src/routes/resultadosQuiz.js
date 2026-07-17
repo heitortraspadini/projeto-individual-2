@@ -8,4 +8,8 @@ router.post("/cadastrar", function (req, res) {
     resultadoQuizController.cadastrar(req, res);
 });
 
+router.get("/resumo/:fkUsuario", function (req, res) {
+    resultadoQuizController.buscarResumoDashboard(req, res);
+});
+
 module.exports = router;
